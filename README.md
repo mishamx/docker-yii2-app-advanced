@@ -61,5 +61,12 @@ How to use
 composer global require "fxp/composer-asset-plugin:~1.1.1"
 composer create-project --prefer-dist --stability=dev mishamx/yii2-docker-app-advanced yii-application
 init # interactive
+docker-compose build
 docker-compose up
+```
+
+Open new  terminal window
+
+```bash
+docker-compose run --rm console ./yii migrate
 ```

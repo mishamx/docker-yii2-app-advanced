@@ -2,6 +2,7 @@
 /yii
 /docker-compose.yml
 /Dockerfile
+/composer.lock
 
 # phpstorm project files
 .idea
