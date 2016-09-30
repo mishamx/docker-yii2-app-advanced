@@ -1,10 +1,4 @@
 <?php
-$params = array_merge(
-    require(__DIR__ . '/../../common/config/params.php'),
-    require(__DIR__ . '/../../common/config/params-local.php'),
-    require(__DIR__ . '/params.php'),
-    require(__DIR__ . '/params-local.php')
-);
 
 return [
     'id' => 'app-frontend',
@@ -14,6 +8,7 @@ return [
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'cookieValidationKey'=>getenv('COOKIE_VALIDATION_KEY'),
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -45,5 +40,7 @@ return [
         ],
         */
     ],
-    'params' => $params,
+    'params' => [
+        'adminEmail' => 'admin@example.com',
+    ],
 ];

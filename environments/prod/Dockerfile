@@ -9,6 +9,9 @@ RUN apt-get update \
             libicu-dev \
             libmcrypt-dev \
             zlib1g-dev \
+            libxpm-dev \
+            libpng-dev \
+            libvpx-dev \
         --no-install-recommends \
 
     # Install PHP extensions
@@ -16,8 +19,14 @@ RUN apt-get update \
     && docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mbstring \
     && docker-php-ext-install mcrypt \
+    && docker-php-ext-install gd \
     && docker-php-ext-install zip \
     && pecl install apcu-5.1.3 && echo extension=apcu.so > /usr/local/etc/php/conf.d/apcu.ini \
+
+    && apt-get -y install \
+#        php-memcached \
+        vim \
+        mysql-client \
 
     && apt-get purge -y g++ \
     && apt-get autoremove -y \

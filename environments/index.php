@@ -41,10 +41,7 @@ return [
             'yii',
             'yii_test',
         ],
-        'setCookieValidationKey' => [
-            'backend/config/main-local.php',
-            'frontend/config/main-local.php',
-        ],
+        'setCookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
     ],
     'Production' => [
         'path' => 'prod',
@@ -58,9 +55,6 @@ return [
             'yii',
             'yii_test',
         ],
-        'setCookieValidationKey' => [
-            'backend/config/main-local.php',
-            'frontend/config/main-local.php',
-        ],
+        'setCookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
     ],
 ];

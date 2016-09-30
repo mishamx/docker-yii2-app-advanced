@@ -1,0 +1,149 @@
+
+version: '2'
+
+services:
+
+    frontend:
+        build: ./
+        volumes:
+            - ./:/var/www/html/
+        networks:
+            - back
+        links:
+            - db
+            - cache
+        #restart: always
+        environment:
+            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            COOKIE_VALIDATION_KEY: "a08d07b470800eb515dc01e176d2359d"
+            DB_DSN: "mysql:host=db;dbname={MYSQL_DATABASE}"
+            DB_USER: "{MYSQL_USER}"
+            DB_PASSWORD: "{MYSQL_PASSWORD}"
+
+
+    backend:
+        build: ./
+        volumes:
+            - ./:/var/www/html/
+        networks:
+            - back
+        links:
+            - db
+            - cache
+        #restart: always
+        environment:
+            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            COOKIE_VALIDATION_KEY: "1398edafff8290bcd78499bece359db4"
+            DB_DSN: "mysql:host=db;dbname={MYSQL_DATABASE}"
+            DB_USER: "{MYSQL_USER}"
+            DB_PASSWORD: "{MYSQL_PASSWORD}"
+
+    console:
+        build: ./
+        volumes_from:
+             - frontend
+        environment:
+            ENABLE_ENV_FILE: 1
+            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            DB_DSN: "mysql:host=db;dbname={MYSQL_DATABASE}"
+            DB_USER: "{MYSQL_USER}"
+            DB_PASSWORD: "{MYSQL_PASSWORD}"
+        links:
+            - db
+            - cache:memcached
+        networks:
+            - back
+        #restart: always
+
+    nginx:
+        build: ./nginx
+        ports:
+            - "80:80"
+            - "81:81"
+        links:
+            - frontend
+            - backend
+        volumes_from:
+            - frontend
+        networks:
+            - back
+            - front
+        #restart: always
+
+    db:
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        expose:
+            - "3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: {MYSQL_ROOT_PASSWORD}
+            MYSQL_DATABASE: {MYSQL_DATABASE}
+            MYSQL_USER: {MYSQL_USER}
+            MYSQL_PASSWORD: {MYSQL_PASSWORD}
+        networks:
+            - back
+        #restart: always
+
+    cache:
+        image: sameersbn/memcached:latest
+        ports:
+            - "11211:11211"
+        networks:
+            - back
+        #restart: always
+
+#    sphinx:
+#        build: ./sphinx
+#        links:
+#            - db
+#        ports:
+#            - "9306:9306"
+#        expose:
+#            - "9306"
+#        environment:
+#            DB_HOST: db
+#            DB_NAME: web
+#            DB_USER: web
+#            DB_PASSWORD: web
+#            DB_PORT: 3306
+#        volumes:
+#            - ./:/var/www/html/sphinx
+#        networks:
+#            - back
+#        #restart: always
+#
+#    rabbit:
+#        image: rabbitmq:3-management
+##        image: rabbitmq:3.6.5
+#        environment:
+#            RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+#            RABBITMQ_DEFAULT_USER: "rabbitmq"
+#            RABBITMQ_DEFAULT_PASS: "rabbitmq"
+#            RABBITMQ_DEFAULT_VHOST: "/"
+#        ports:
+#            - "15672:15672"
+#            - "5672:5672"
+#        volumes:
+#            - "./rabbit/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+#            #- "./rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro"
+#        networks:
+#            - back
+#    app-worker:
+#        build: ./app-worker
+#        volumes_from:
+#             - frontend
+#        environment:
+#            ENABLE_ENV_FILE: 1
+#            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+#        links:
+#            - db
+#            - rabbit
+#        networks:
+#            - back
+
+networks:
+    front:
+        driver: bridge
+    back:
+        driver: bridge

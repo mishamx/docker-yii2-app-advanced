@@ -15,6 +15,11 @@ services:
         #restart: always
         environment:
             API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            COOKIE_VALIDATION_KEY: "a08d07b470800eb515dc01e176d2359d"
+            DB_DSN: "mysql:host=db;dbname=web"
+            DB_USER: "web"
+            DB_PASSWORD: "web"
+
 
     backend:
         build: ./
@@ -28,6 +33,10 @@ services:
         #restart: always
         environment:
             API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            COOKIE_VALIDATION_KEY: "1398edafff8290bcd78499bece359db4"
+            DB_DSN: "mysql:host=db;dbname=web"
+            DB_USER: "web"
+            DB_PASSWORD: "web"
 
     console:
         build: ./
@@ -35,6 +44,10 @@ services:
              - frontend
         environment:
             ENABLE_ENV_FILE: 1
+            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            DB_DSN: "mysql:host=db;dbname=web"
+            DB_USER: "web"
+            DB_PASSWORD: "web"
         links:
             - db
             - cache:memcached
