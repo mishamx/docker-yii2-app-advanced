@@ -1,0 +1,15 @@
+version: '3.3'
+
+services:
+    app:
+        image: mishamx/php7:latest
+        volumes:
+            - ../:/var/www/html/
+            - ./app-dev/php.ini:/usr/local/etc/php/conf.d/php-dev-settings.ini
+        environment:
+            PHP_IDE_CONFIG: 'serverName=$PHP_IDE_CONFIG'
+    nginx:
+        build: ./nginx
+        volumes:
+            - ../:/var/www/html/
+            - ./nginx/:/etc/nginx-source/

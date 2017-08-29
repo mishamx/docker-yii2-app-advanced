@@ -1,8 +1,8 @@
 {
-    "name": "yiisoft/yii2-app-advanced",
+    "name": "mishamx/docker-yii2-app-advanced",
     "description": "Yii 2 Advanced Project Template",
-    "keywords": ["yii2", "framework", "advanced", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "keywords": ["docker", "dockerize", "yii2", "framework", "advanced", "project template"],
+    "homepage": "http://www.dockerize.ru/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
@@ -17,7 +17,9 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.6",
         "yiisoft/yii2-bootstrap": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0"
+        "yiisoft/yii2-swiftmailer": "~2.0.0",
+        "bower-asset/bootstrap": "^3.3",
+        "npm-asset/jquery": "^2.2"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -27,7 +29,8 @@
         "codeception/verify": "~0.3.1"
     },
     "config": {
-        "process-timeout": 1800
+        "process-timeout": 1800,
+        "vendor-dir": "vendor"
     },
     "repositories": [
         {

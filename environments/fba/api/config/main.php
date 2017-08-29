@@ -5,29 +5,23 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'app-api',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-    ],
-    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-backend',
-            'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
+            'csrfParam' => '_csrf-api',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_identity-api', 'httpOnly' => true],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            // this is the name of the session cookie used for login on the api
+            'name' => 'advanced-api',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -63,14 +57,6 @@ return [
             'attributes' => [
                 PDO::ATTR_PERSISTENT => true,
             ],
-        ],
-        'mailer' => [
-            'class' => 'yii\swiftmailer\Mailer',
-            'viewPath' => '@common/mail',
-            // send all mails to a file by default. You have to set
-            // 'useFileTransport' to false and configure a transport
-            // for the mailer to send real emails.
-            'useFileTransport' => true,
         ],
     ],
     'params' => $params,

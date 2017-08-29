@@ -1,0 +1,185 @@
+#!/usr/bin/env bash
+
+APPCREATEMODE='fb'
+APPWORKER=NO
+APPCRON=NO
+SPHINXSEARCH=NO
+RABBIT=NO
+MYSQLSLAVE=NO
+
+VERSION=1.0.0
+SCRIPT_NAME="Dockerize tool"
+COMMAND_NAME="dockerize"
+COMMAND="ERR"
+COMPOSE="./docker-compose.yml"
+CONTAINERS_PATH="./docker"
+SOURCE_CONTAINERS_PATH="/app/environments/docker"
+BUILD_MODE="prod"
+
+LINE="---------------------------------------------------------------"
+
+function help {
+    echo ""
+    echo "$SCRIPT_NAME (http://dockerize.ru) for Yii2"
+    echo $LINE
+    echo ""
+    echo "Usage:	$COMMAND_NAME COMMAND"
+    echo ""
+    echo "Options:"
+    echo ""
+    echo "  --with-api               With API application"
+# Coming soon...
+#    echo "  --with-sphinx            With Sphinxsearch container"
+#    echo "  --with-rabbit            With RabbitMQ container"
+#    echo "  --with-cron              With Cron container"
+#    echo "  --with-worker            With Worker container"
+#    echo "  --with-mysql-slave       With MySQL-Slave container"
+    echo ""
+    echo "  -d, --dev                Docker compose for dev"
+    echo "  -t, --test               Docker compose for test"
+    echo "  -p, --prod               Docker compose for production"
+    echo "  -f, --file               Location of docker compose file (default \"$COMPOSE\")"
+    echo "  -p, --path               Docker containers path (default \"$CONTAINERS_PATH\")"
+    echo "  -s, --source             Docker source containers path (default \"$SOURCE_CONTAINERS_PATH\")"
+    echo ""
+    echo "  -h, --help               Print usage"
+    echo "  -v, --version            Print version information and quit"
+    echo ""
+    echo "Commands:"
+    echo "  init                     Init project"
+#    echo "  add                      Add container"
+    echo "  compose                  Build docker compose file"
+    echo ""
+}
+
+function errcmd {
+    if [ ! -z $1 ]; then
+        echo "$COMMAND_NAME: '$1' is not a dockerize command."
+    else
+        echo "Usage:	$COMMAND_NAME COMMAND"
+    fi
+    echo "See '$COMMAND_NAME --help'"
+}
+
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    # Containers
+    --with-sphinx)
+        SPHINXSEARCH=YES
+    ;;
+    --with-rabbit)
+        RABBIT=YES
+    ;;
+    --with-cron)
+        APPCRON=YES
+    ;;
+    --with-worker)
+        APPWORKER=YES
+    ;;
+    --with-mysql-slave)
+        MYSQLSLAVE=YES
+    ;;
+    # Compose Mode
+    --with-api)
+        APPCREATEMODE='fba'
+    ;;
+    -d|--dev)
+        BUILD_MODE="dev"
+    ;;
+    -t|--test)
+        BUILD_MODE="test"
+    ;;
+    -p|--prod)
+        BUILD_MODE="prod"
+    ;;
+    -f|--file)
+        COMPOSE=$2
+        shift
+    ;;
+    -p|--path)
+        CONTAINERS_PATH=$2
+        shift
+    ;;
+    -s|--source)
+        SOURCE_CONTAINERS_PATH=$2
+        shift
+    ;;
+    # All functions
+    -v|--version)
+        echo "$SCRIPT_NAME version $VERSION"
+        exit 0;
+    ;;
+    -h|-\?|--help)
+        help
+        exit 0;
+    ;;
+    # Commands
+    init|add|compose)
+        COMMAND=$1
+    ;;
+    *)
+        errcmd $key
+        exit 0;
+    ;;
+
+esac
+shift # past argument or value
+done
+
+case $COMMAND in
+    init)
+        echo "Init"
+        builder $APPCREATEMODE
+        if [ ! -d $CONTAINERS_PATH ]; then
+            mkdir $CONTAINERS_PATH
+            echo "Make dir $CONTAINERS_PATH"
+        fi
+
+        # Copy default containers
+        cp -R $SOURCE_CONTAINERS_PATH/nginx $CONTAINERS_PATH
+        cp -R $SOURCE_CONTAINERS_PATH/app-dev $CONTAINERS_PATH
+
+    ;;
+    init|add)
+        # Sphinx
+        if [ $SPHINXSEARCH = "YES" ]
+        then
+            echo "Added Sphinxsearch container"
+            cp -R $SOURCE_CONTAINERS_PATH/sphinx $CONTAINERS_PATH
+        fi
+
+        # Rabbit
+        if [ $RABBIT = "YES" ]
+        then
+            echo "Added RabbitMQ container"
+            cp -R $SOURCE_CONTAINERS_PATH/rabbit $CONTAINERS_PATH
+        fi
+
+        # App Worker
+        if [ $APPWORKER = "YES" ]
+        then
+            echo "Added PHP Worker container"
+            cp -R $SOURCE_CONTAINERS_PATH/worker $CONTAINERS_PATH
+        fi
+
+        # App Cron
+        if [ $APPCRON = "YES" ]
+        then
+            echo "Added Cron container"
+            cp -R $SOURCE_CONTAINERS_PATH/cron $CONTAINERS_PATH
+        fi
+    ;;
+    compose)
+        echo "Compose $COMPOSE"
+    ;;
+    ERR)
+        errcmd
+    ;;
+    *)
+        errcmd $COMMAND
+        exit 0;
+    ;;
+esac

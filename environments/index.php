@@ -29,8 +29,8 @@
  * ```
  */
 return [
-    'Development' => [
-        'path' => 'dev',
+    'FB' => [
+        'path' => 'fb',
         'setWritable' => [
             'backend/runtime',
             'backend/web/assets',
@@ -39,27 +39,27 @@ return [
         ],
         'setExecutable' => [
             'yii',
-            'yii_test',
         ],
         'setCookieValidationKey' => [
-            'backend/config/main-local.php',
-            'frontend/config/main-local.php',
+            'backend/config/main.php',
+            'frontend/config/main.php',
         ],
     ],
-    'Production' => [
-        'path' => 'prod',
+    'FBA' => [
+        'path' => 'fba',
         'setWritable' => [
             'backend/runtime',
             'backend/web/assets',
             'frontend/runtime',
             'frontend/web/assets',
+            'api/runtime',
         ],
         'setExecutable' => [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'backend/config/main-local.php',
-            'frontend/config/main-local.php',
+            'backend/config/main.php',
+            'frontend/config/main.php',
         ],
     ],
 ];

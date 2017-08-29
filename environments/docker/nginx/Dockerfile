@@ -1,0 +1,1 @@
+FROM mishamx/nginx:envplate

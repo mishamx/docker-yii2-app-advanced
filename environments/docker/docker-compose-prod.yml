@@ -1,0 +1,7 @@
+version: '3.3'
+
+services:
+    app:
+        image: $APP_IMAGE:$APP_VERSION
+    nginx:
+        image: $NGINX_IMAGE:$APP_VERSION

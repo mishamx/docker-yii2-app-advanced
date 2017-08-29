@@ -1,9 +1,7 @@
 <?php
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
+    require __DIR__ . '/params.php'
 );
 
 return [
@@ -11,9 +9,15 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
+    'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
+            'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
         ],
         'user' => [
             'identityClass' => 'common\models\User',
@@ -44,6 +48,29 @@ return [
             ],
         ],
         */
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => '' . getenv('DB_TYPE') . ':host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME') . '',
+            'username'    => getenv('DB_USER_NAME'),
+            'password'    => getenv('DB_USER_PASSWORD'),
+            'charset' => 'utf8mb4',
+
+            'enableSchemaCache'   => true,
+            'schemaCacheDuration' => 3600,
+            'schemaCache'         => 'cache',
+
+            'attributes' => [
+                PDO::ATTR_PERSISTENT => true,
+            ],
+        ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'viewPath' => '@common/mail',
+            // send all mails to a file by default. You have to set
+            // 'useFileTransport' to false and configure a transport
+            // for the mailer to send real emails.
+            'useFileTransport' => true,
+        ],
     ],
     'params' => $params,
 ];

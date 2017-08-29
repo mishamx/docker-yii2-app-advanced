@@ -1,0 +1,43 @@
+version: '3.3'
+
+services:
+    app:
+        environment:
+            API_TOKEN: "3e1d5a226e9ffd6ea5edd867c171736f046ed9ba"
+            YII_ENV: "$YII_ENV"
+
+    db:
+        image: mishamx/mysql:5.7
+        environment:
+            MYSQL_DATABASE: $DB_NAME
+            MYSQL_USER: $DB_USER_NAME
+            MYSQL_PASSWORD: $DB_USER_PASSWORD
+            MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+            MYSQL_REPLICATION_USER: $DB_REPLICATION_USER
+            MYSQL_REPLICATION_PASSWORD: $DB_REPLICATION_PASS
+            MYSQL_DATABASE_DEFAULT_CHARSET: "utf8mb4"
+            MYSQL_DATABASE_DEFAULT_COLLATE: "utf8mb4_unicode_ci"
+        networks:
+            - back
+
+    cache:
+        image: sameersbn/memcached:latest
+        networks:
+            - back
+
+    nginx:
+        depends_on:
+            - "app"
+        ports:
+            - "80:80"
+        links:
+            - app
+        networks:
+            - back
+            - front
+
+networks:
+    front:
+        driver: bridge
+    back:
+        driver: bridge

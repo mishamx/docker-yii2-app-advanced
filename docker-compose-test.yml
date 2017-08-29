@@ -1,0 +1,100 @@
+
+version: '2.0'
+
+services:
+    sut:
+        depends_on:
+            - "test.app"
+            - "test.db"
+            - "test.nginx"
+            - "test.cache"
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        volumes_from:
+            - service:test.app:rw
+        links:
+            - test.db
+            - test.app
+            - test.nginx
+            - test.cache
+        volumes_from:
+            - service:test.app:rw
+        environment:
+            YII_ENV: 'test'
+
+            NGINX_HOST: "http://test.nginx"
+
+            COOKIE_VALIDATION_KEY: 'TESTING'
+
+            DB_TYPE: mysql
+            DB_HOST: test.db
+            DB_PORT: 3306
+            DB_NAME: test
+            DB_USER_NAME: root
+            DB_USER_PASSWORD: test
+
+            CACHE_HOST: test.cache
+            CACHE_PORT: '11211'
+            CACHE_WEIGHT: '60'
+
+            PATH: "/var/www/html/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+        command: ./testinit.sh
+
+    test.db:
+        image: mishamx/mysql:5.7
+        ports:
+            - "3307:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: test
+            MYSQL_DATABASE: test
+            MYSQL_USER: test
+            MYSQL_PASSWORD: test
+            MYSQL_ROOT_PASSWORD: test
+
+    test.app:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        depends_on:
+            - "test.db"
+            - "test.cache"
+        links:
+            - test.db
+            - test.cache
+#        volumes:
+#            - .:/var/www/html/
+        environment:
+            YII_ENV: 'test'
+            YII_DEBUG: 1
+
+            COOKIE_VALIDATION_KEY: 'TESTING'
+            NGINX_HOST: "http://test.nginx"
+
+            DB_TYPE: mysql
+            DB_HOST: test.db
+            DB_PORT: 3306
+            DB_NAME: test
+            DB_USER_NAME: test
+            DB_USER_PASSWORD: test
+
+            CACHE_HOST: test.cache
+            CACHE_PORT: '11211'
+            CACHE_WEIGHT: '60'
+
+            PATH: "/var/www/html/vendor/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+    test.nginx:
+        build: ./docker/nginx
+        depends_on:
+            - "test.app"
+        ports:
+            - "80"
+        volumes_from:
+            - service:test.app:rw
+        environment:
+            APP_HOST: 'test.app'
+
+    test.cache:
+        image: sameersbn/memcached:latest
