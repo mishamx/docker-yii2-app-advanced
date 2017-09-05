@@ -39,13 +39,6 @@ console
     migrations/          contains database migrations
     models/              contains console-specific model classes
     runtime/             contains files generated during runtime
-api
-    config/              contains api configurations
-    controllers/         contains Web controller classes
-    models/              contains api-specific model classes
-    runtime/             contains files generated during runtime
-    tests/               contains tests for api application
-    web/                 contains the entry script and Web resources
 backend
     assets/              contains application assets such as JavaScript and CSS
     config/              contains backend configurations
@@ -74,5 +67,4 @@ DOCKER FILES
 ```
 Dockerfile               application Dockerfile
 docker-compose-test.yml  automated testing before build on docker hub (https://docs.docker.com/docker-cloud/builds/automated-testing/)
-
 ```
