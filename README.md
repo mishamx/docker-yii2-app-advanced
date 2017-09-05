@@ -6,17 +6,17 @@ How to use?
 
 1. Create new empty folder 
 ```bash
-mkdir yii2deckerize && cd yii2deckerize 
+mkdir yii2dockerize && cd yii2dockerize 
 ```
-1. Run command on docker container (mishamx/yii2-app-advanced)
+2. Run command on docker container (mishamx/yii2-app-advanced)
 ```bash
 docker run --rm -v `echo $( pwd )`:/var/www/html mishamx/yii2-app-advanced:latest /sbin/dockerize init
 ```
-1. Build test configuration
+3. Build test configuration
 ```bash
 docker-compose -f docker-compose-test.yml build
 ```
-1. Run all tests
+4. Run all tests
 ```bash
 docker-compose -f docker-compose-test.yml up
 ```
