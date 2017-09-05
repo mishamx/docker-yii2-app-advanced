@@ -5,6 +5,9 @@ How to use?
 -----------
 
 1. Create new empty folder 
+```bash
+mkdir yii2deckerize && cd yii2deckerize 
+```
 1. Run command on docker container (mishamx/yii2-app-advanced)
 ```bash
 docker run --rm -v `echo $( pwd )`:/var/www/html mishamx/yii2-app-advanced:latest /sbin/dockerize init
