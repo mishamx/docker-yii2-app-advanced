@@ -38,7 +38,10 @@ return [
             'frontend/web/assets',
         ],
         'setExecutable' => [
+            'init',
             'yii',
+            'yii_test',
+            'testinit.sh',
         ],
         'setCookieValidationKey' => [
             'backend/config/main.php',
@@ -55,7 +58,10 @@ return [
             'api/runtime',
         ],
         'setExecutable' => [
+            'init',
             'yii',
+            'yii_test',
+            'testinit.sh',
         ],
         'setCookieValidationKey' => [
             'backend/config/main.php',

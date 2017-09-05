@@ -1,8 +1,5 @@
 FROM mishamx/php7:latest
 
-# TODO: remove for prod
-COPY . /app
-
 COPY ./builder /sbin/builder
 COPY ./dockerize /sbin/dockerize
 

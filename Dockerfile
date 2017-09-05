@@ -11,7 +11,8 @@ RUN apt-get update \
 
 COPY ./composer.json /var/www/html/composer.json
 COPY ./composer.lock /var/www/html/composer.lock
-RUN composer install --no-progress --ignore-platform-reqs --prefer-dist --profile --optimize-autoloader
+RUN composer install --no-progress --ignore-platform-reqs --prefer-dist --profile --optimize-autoloader \
+        && chmod +x yii yii_test testinit.sh
 
 COPY . /var/www/html
 

@@ -15,6 +15,7 @@ function basecopy {
            [[ $f = '/app/Dockerfile-builder' ]] || \
            [[ $f = '/app/.github' ]] || \
            [[ $f = '/app/builder' ]] || \
+           [[ $f = '/app/dockerize' ]] || \
            [[ $f = '/app/README.md' ]] || \
            [[ $f = '/app/init' ]]
         then
@@ -48,12 +49,13 @@ echo $LINE
 echo "Create project $PROJECT"
 echo $LINE
 
-# TODO: remove for prod
-#composer create-project --prefer-dist --stability=$STABILITY $PROJECT /app
+rm -rf /app
+composer create-project --prefer-dist --stability=$STABILITY $PROJECT /app
 echo "Init $MODE"
 echo $LINE
 
 cd /app
+chmod +x /app/init
 /app/init --env=$MODE --overwrite=y
 
 echo $LINE
