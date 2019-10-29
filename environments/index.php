@@ -43,10 +43,7 @@ return [
             'yii_test',
             'testinit.sh',
         ],
-        'setCookieValidationKey' => [
-            'backend/config/main.php',
-            'frontend/config/main.php',
-        ],
+        'setCookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
     ],
     'FBA' => [
         'path' => 'fba',
@@ -63,9 +60,6 @@ return [
             'yii_test',
             'testinit.sh',
         ],
-        'setCookieValidationKey' => [
-            'backend/config/main.php',
-            'frontend/config/main.php',
-        ],
+        'setCookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
     ],
 ];

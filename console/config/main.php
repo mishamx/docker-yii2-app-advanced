@@ -1,8 +1,4 @@
 <?php
-$params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/params.php'
-);
 
 return [
     'id' => 'app-console',
@@ -26,8 +22,10 @@ return [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning'],
                 ],
-            ],
+            ],q
         ],
     ],
-    'params' => $params,
+    'params' => [
+        'adminEmail' => 'admin@example.com',
+    ],
 ];

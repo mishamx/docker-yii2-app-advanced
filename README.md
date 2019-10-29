@@ -3,20 +3,17 @@ Docker Yii2 App Advanced
 
 How to use?
 -----------
+```bash
+composer global require "fxp/composer-asset-plugin:~1.1.1"
+composer create-project --prefer-dist --stability=dev 2mxdev/yii2-docker-app-advanced yii-application
+./init # interactive
+docker-compose build
+docker-compose up
+```
 
-1. Create new empty folder 
+Open new  terminal window
+
 ```bash
-mkdir yii2dockerize && cd yii2dockerize 
+docker-compose run --rm console ./yii migrate
 ```
-2. Run command on docker container (mishamx/yii2-app-advanced)
-```bash
-docker run --rm -v `echo $( pwd )`:/var/www/html mishamx/yii2-app-advanced:latest /sbin/dockerize init
-```
-3. Build test configuration
-```bash
-docker-compose -f docker-compose-test.yml build
-```
-4. Run all tests
-```bash
-docker-compose -f docker-compose-test.yml up
-```
+

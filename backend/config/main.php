@@ -1,8 +1,4 @@
 <?php
-$params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/params.php'
-);
 
 return [
     'id' => 'app-backend',
@@ -16,6 +12,25 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
+
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => getenv('DB_DSN'),
+            'username' => getenv('DB_USER'),
+            'password' => getenv('DB_PASSWORD'),
+            'charset' => 'utf8',
+            'tablePrefix' => '',
+
+//            'enableSchemaCache' => true,
+//            // Duration of schema cac he.
+//            'schemaCacheDuration' => 3600,
+//            // Name of the cache component used to store schema information
+//            'schemaCache' => 'cache',
+
+            'attributes'=>[
+                PDO::ATTR_PERSISTENT => true
+            ]
+        ],
         'request' => [
             'csrfParam' => '_csrf-backend',
             'cookieValidationKey' => getenv('COOKIE_VALIDATION_KEY'),
@@ -73,5 +88,7 @@ return [
             'useFileTransport' => true,
         ],
     ],
-    'params' => $params,
+    'params' => [
+        'adminEmail' => 'admin@example.com',
+    ],
 ];
